@@ -1,0 +1,8 @@
+NODE_ENV=development
+PORT=
+DB_TYPE=
+DB_HOST=localhost
+DB_PORT=
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
