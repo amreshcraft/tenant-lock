@@ -10,11 +10,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepo: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async createUser(dto: CreateUserDto): Promise<User> {
-    const existing = await this.userRepo.findOne({
+    const existing = await this.userRepository.findOne({
       where: { email: dto.email },
     });
     console.log('existing', existing);
@@ -24,12 +24,20 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-    const user = this.userRepo.create({
+    const user = this.userRepository.create({
       name: dto.name,
       email: dto.email,
       password: hashedPassword,
     });
     console.log('user: ', user);
-    return this.userRepo.save(user);
+    return this.userRepository.save(user);
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email } });
+  }
+
+  async findById(id: number): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
   }
 }
